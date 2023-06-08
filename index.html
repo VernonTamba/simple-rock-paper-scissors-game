@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Rock Paper Scissors</title>
+  </head>
+  <body>
+    <div class="header">
+      <div class="header-title">
+        <h1 class="title">Rock Paper Scissors</h1>
+        <img src="./img/rock-paper-scissors.png" alt="rock paper scissors" />
+      </div>
+      <button class="button">PLAY</button>
+    </div>
+
+    <div class="container">
+      <div class="player-you">
+        <div class="rock icon you"><img src="./img/rock.png" alt="rock" /></div>
+        <div class="paper icon you">
+          <img src="./img/paper.png" alt="paper" />
+        </div>
+        <div class="scissors icon you">
+          <img src="./img/scissors.png" alt="scissors" />
+        </div>
+        <p>YOU</p>
+      </div>
+      <div class="player-computer">
+        <div class="rock icon computer">
+          <img src="./img/rock.png" alt="rock" />
+        </div>
+        <div class="paper icon computer">
+          <img src="./img/paper.png" alt="paper" />
+        </div>
+        <div class="scissors icon computer">
+          <img src="./img/scissors.png" alt="scissors" />
+        </div>
+        <p>COMPUTER</p>
+      </div>
+    </div>
+    <div class="fighting-board">
+      <img src="./img/line.png" alt="vs" />
+    </div>
+    <div class="score-board">
+      <div class="score-board--player">
+        <h1 class="player-score">0</h1>
+      </div>
+      <span> - </span>
+      <div class="score-board--computer">
+        <h1 class="computer-score">0</h1>
+      </div>
+    </div>
+    <dialog class="modal">
+      <h2 class="modal-content">Testing Modal!</h2>
+    </dialog>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
