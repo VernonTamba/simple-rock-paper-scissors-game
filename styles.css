@@ -8,6 +8,7 @@ body {
   font-family: "Kanit", sans-serif;
   background-color: crimson;
   color: white;
+  overflow: hidden;
 }
 
 .header {
@@ -15,6 +16,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 10px;
 }
 
 .header-title {
@@ -50,6 +52,7 @@ body {
 .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 80px 100px;
 }
 
@@ -81,6 +84,7 @@ body {
   border-radius: 50%;
   background-color: aquamarine;
   cursor: pointer;
+  transition: all 0.1s ease;
 }
 
 .player-computer > .icon {
@@ -89,7 +93,6 @@ body {
 
 .player-you > .icon:hover {
   background-color: rgba(6, 24, 44, 0.65);
-  transform: scale(1.5);
 }
 
 .icon img {
@@ -99,6 +102,12 @@ body {
   padding: 10px;
 }
 
+.board-container {
+  display: flex;
+  flex-direction: column;
+  z-index: -1;
+}
+
 .fighting-board {
   display: flex;
   justify-content: center;
@@ -106,10 +115,6 @@ body {
   width: 20rem;
   height: 10rem;
   background-color: rgba(255, 255, 255, 0.5);
-  position: absolute;
-  top: 55%;
-  left: 50%;
-  transform: translate(-50%, -55%);
   z-index: -1;
 }
 
@@ -125,11 +130,6 @@ body {
   gap: 1rem;
   width: 20rem;
   height: 5rem;
-  /* background-color: rgba(255, 255, 255, 0.5); */
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -70%);
   z-index: -1;
   margin-top: 20px;
 }
@@ -142,13 +142,13 @@ body {
 .modal {
   text-align: center;
   padding: 40px;
-  max-width: 70ch;
+  max-width: 80ch;
   border: none;
   border-radius: 0.5rem;
   position: absolute;
-  top: 55%;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -55%);
+  transform: translate(-50%, -50%);
   transition: all 0.5s ease-in-out;
 }
 
@@ -157,7 +157,8 @@ body {
 }
 
 .modal-content {
-  font-size: 4rem;
+  font-size: 2.5rem;
 }
 
-/* NO RESPONSIVE DESIGN YET! */
+/*! NO RESPONSIVE DESIGN YET! !*/
+/* Remove margin, header font smaller, score board smaller, etc */

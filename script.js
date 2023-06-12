@@ -7,8 +7,33 @@ const playButton = document.querySelector(".button");
 const modal = document.querySelector(".modal");
 const modalContent = document.querySelector(".modal-content");
 const container = document.querySelector(".container");
-// const playerYouDiv = document.querySelector(".player-you");
-// const playerComputerDiv = document.querySelector(".player-computer");
+const playerDiv = document.querySelector(".player-you");
+const computerDiv = document.querySelector(".player-computer");
+const boards = document.querySelector(".board-container");
+const header = document.querySelector(".header");
+
+// ANIMATION WHEN THE WINDOW LOADS
+window.addEventListener("load", () => {
+  gsap.from(header, {
+    y: -100,
+    duration: 2,
+  });
+
+  gsap.from(playerDiv, {
+    x: -300,
+    duration: 2,
+  });
+
+  gsap.from(computerDiv, {
+    x: 300,
+    duration: 2,
+  });
+
+  gsap.from(boards, {
+    y: -10,
+    duration: 2,
+  });
+});
 
 // LOGIC OF THE GAME
 let players = {
@@ -23,18 +48,18 @@ let scoreCount = {
 
 const icons = ["rock", "paper", "scissors"];
 
-playButton.addEventListener("click", () => {
-  if (playButton.textContent === "PLAY") {
-    playButton.textContent = "QUIT";
+// playButton.addEventListener("click", () => {
+//   if (playButton.textContent === "PLAY") {
+//     playButton.textContent = "QUIT";
 
-    // Show the game
-  } else {
-    // Reset, hide, and quit the game
-    playButton.textContent = "PLAY";
-    playerScore.textContent = 0;
-    computerScore.textContent = 0;
-  }
-});
+//     // Show the game
+//   } else {
+//     // Reset, hide, and quit the game
+//     playButton.textContent = "PLAY";
+//     playerScore.textContent = 0;
+//     computerScore.textContent = 0;
+//   }
+// });
 
 playerIcons.forEach((playerIcon) => {
   playerIcon.addEventListener("click", (event) => {
@@ -44,20 +69,31 @@ playerIcons.forEach((playerIcon) => {
       left: playerIcon.getBoundingClientRect().left,
       right: playerIcon.getBoundingClientRect().right,
     };
+    let playerIconOriginalPosition = {
+      x: playerIcon.offsetLeft,
+      y: playerIcon.offsetTop,
+    };
+    // Store the player icon and get the random computer icon
     players.player = event.target.alt;
-    players.computer = icons[Math.floor(Math.random() * 2)];
+    players.computer = icons[Math.floor(Math.random() * 3)];
 
     // Values are still unsure and not applicable for responsive design
     gsap.to(playerIcon, {
-      x: document.body.clientWidth / 3 + 20,
-      y:
-        playerIcons[1].getBoundingClientRect().top -
-        (playerIconPosition.top + 20),
+      x: playerIconOriginalPosition.x * 42.5,
+      y: playerIcons[1].getBoundingClientRect().top - playerIconPosition.top,
+      onComplete: () => {
+        // Bring back the icon to its original position
+        gsap.to(playerIcon, {
+          x: -playerIconOriginalPosition.x / 100,
+          y: -playerIconOriginalPosition.y / 100,
+          delay: 4,
+        });
+      },
     });
-    playerIcon.style.transform = "scale(1.5)";
 
     computerIcons.forEach((computerIcon) => {
       if (computerIcon.classList.contains(players.computer)) {
+        // computerIcon.style.transform = "scale(2)";
         let computerIconPosition = {
           top: computerIcon.getBoundingClientRect().top,
           right: computerIcon.getBoundingClientRect().right,
@@ -66,12 +102,9 @@ playerIcons.forEach((playerIcon) => {
           x: computerIcon.offsetLeft,
           y: computerIcon.offsetTop,
         };
-        console.log(computerIconPosition);
-        console.log(computerIconOriginalPosition);
-        computerIcon.style.transform = "scale(1.5)";
         // Values are still unsure and not applicable for responsive design
         gsap.to(computerIcon, {
-          x: -(document.body.clientWidth / 3 - 20),
+          x: -playerIconOriginalPosition.x * 44.5,
           y:
             computerIcons[1].getBoundingClientRect().top -
             computerIconPosition.top,
@@ -79,17 +112,13 @@ playerIcons.forEach((playerIcon) => {
           onComplete: () => {
             setTimeout(() => {
               checkWinner(players.player, players.computer);
-              console.log(-(document.body.clientWidth / 3 - 20));
-              console.log(
-                computerIcons[1].getBoundingClientRect().top -
-                  computerIconPosition.top
-              );
-            }, 1000);
-            // TODO: Bring back the icons to its original state (same for the player icon)
-            // gsap.to(computerIcon, {
-            //   x: computerIconOriginalPosition.x,
-            //   y: computerIconOriginalPosition.y,
-            // });
+            }, 2000);
+            // Bring back the icon to its original position
+            gsap.to(computerIcon, {
+              x: computerIconOriginalPosition.x / 100,
+              y: -computerIconOriginalPosition.y / 100,
+              delay: 4,
+            });
           },
         });
       }
@@ -99,25 +128,14 @@ playerIcons.forEach((playerIcon) => {
 
 // Function to check the winner of the game
 const checkWinner = (playerPick, computerPick) => {
-  // If both players have 2 points, that means sudden death (last one wins)
-  if (scoreCount.player === 2 && scoreCount.computer === 2) {
-    modalContent.textContent = "SUDDEN DEATH!";
-    modal.showModal();
-    setTimeout(() => {
-      modal.close();
-    }, 2000);
-  }
   // No winner here or a draw
-  else if (
+  if (
     (playerPick === icons[0] && computerPick === icons[0]) ||
     (playerPick === icons[1] && computerPick === icons[1]) ||
     (playerPick === icons[2] && computerPick === icons[2])
   ) {
     modalContent.textContent = "DRAW! NO WINNERS!";
-    modal.showModal();
-    setTimeout(() => {
-      modal.close();
-    }, 2000);
+    displayModal();
   }
   // Player wins here
   else if (
@@ -125,39 +143,51 @@ const checkWinner = (playerPick, computerPick) => {
     (playerPick === icons[1] && computerPick === icons[0]) ||
     (playerPick === icons[2] && computerPick === icons[1])
   ) {
-    modalContent.textContent = "PLAYER WINS!";
-    modal.showModal();
-    setTimeout(() => {
-      modal.close();
-    }, 2000);
     scoreCount.player++;
-    playerScore.textContent = scoreCount.player;
     if (scoreCount.player === 3) {
+      resetGame();
       modalContent.textContent = "GAME OVER! PLAYER WINS!";
-      modal.showModal();
-      setTimeout(() => {
-        modal.close();
-      }, 2000);
+      displayModal();
+    } else {
+      modalContent.textContent = "PLAYER WINS!";
+      displayModal();
+      playerScore.textContent = scoreCount.player;
     }
   }
+  // TODO: Fix the positioning of the icons on the board
   // Computer wins here
   else {
-    modalContent.textContent = "COMPUTER WINS!";
-    modal.showModal();
-    setTimeout(() => {
-      modal.close();
-    }, 2000);
     scoreCount.computer++;
-    computerScore.textContent = scoreCount.computer;
     if (scoreCount.computer === 3) {
+      resetGame();
       modalContent.textContent = "GAME OVER! COMPUTER WINS!";
-      modal.showModal();
-      setTimeout(() => {
-        modal.close();
-      }, 2000);
+      displayModal();
+    } else {
+      modalContent.textContent = "COMPUTER WINS!";
+      displayModal();
+      computerScore.textContent = scoreCount.computer;
     }
+  }
+  // If both players have 2 points, that means sudden death (last one wins)
+  if (scoreCount.player === 2 && scoreCount.computer === 2) {
+    modalContent.textContent = "SUDDEN DEATH!";
+    displayModal();
   }
 };
 
-// TODO: When play button clicks, do some fading in with the icons and stuff
+const displayModal = () => {
+  modal.showModal();
+  setTimeout(() => {
+    modal.close();
+  }, 1500);
+};
+
+const resetGame = () => {
+  scoreCount.player = 0;
+  scoreCount.computer = 0;
+  playerScore.textContent = "0";
+  computerScore.textContent = "0";
+};
+
 // TODO: Change position of the picked icons when screen is changing (responsive web design)
+// TODO: Fix the positioning of the modal
