@@ -12,6 +12,13 @@ const computerDiv = document.querySelector(".player-computer");
 const boards = document.querySelector(".board-container");
 const header = document.querySelector(".header");
 
+// NOTE: Responsive design is not yet supported. The animation is perhaps going to be working in a full screen size. My full screen size is 1536.
+window.addEventListener("resize", () => {
+  alert(
+    "The animation only works in full screen size! This game does not support responsive design. Apologies! Click OK to proceed!"
+  );
+});
+
 // ANIMATION WHEN THE WINDOW LOADS
 window.addEventListener("load", () => {
   gsap.from(header, {
@@ -47,19 +54,6 @@ let scoreCount = {
 };
 
 const icons = ["rock", "paper", "scissors"];
-
-// playButton.addEventListener("click", () => {
-//   if (playButton.textContent === "PLAY") {
-//     playButton.textContent = "QUIT";
-
-//     // Show the game
-//   } else {
-//     // Reset, hide, and quit the game
-//     playButton.textContent = "PLAY";
-//     playerScore.textContent = 0;
-//     computerScore.textContent = 0;
-//   }
-// });
 
 playerIcons.forEach((playerIcon) => {
   playerIcon.addEventListener("click", (event) => {
@@ -154,7 +148,6 @@ const checkWinner = (playerPick, computerPick) => {
       playerScore.textContent = scoreCount.player;
     }
   }
-  // TODO: Fix the positioning of the icons on the board
   // Computer wins here
   else {
     scoreCount.computer++;
@@ -189,5 +182,4 @@ const resetGame = () => {
   computerScore.textContent = "0";
 };
 
-// TODO: Change position of the picked icons when screen is changing (responsive web design)
-// TODO: Fix the positioning of the modal
+// TODO: Change position of the picked icons when screen is changing (responsive web design). Still not done yet!
